@@ -1,0 +1,7 @@
+services:
+  cypress:
+    build: .
+    working_dir: /docker-container-setup
+    volumes:
+      - .:/docker-container-setup
+    tty: true
