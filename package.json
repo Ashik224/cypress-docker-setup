@@ -3,5 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "test": "cypress run"
+  },
+  "devDependencies": {
+    "cypress": "^15.0.0"
   }
 }
