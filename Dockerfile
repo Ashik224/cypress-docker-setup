@@ -4,22 +4,23 @@ WORKDIR /docker-container-setup
 COPY package*.json ./
 RUN npm install
 COPY . .
-CMD ["npx", "cypress", "run", "--spec", "cypress/e2e/secondTest.cy.js"]
 
 # Install Xvfb and Linux dependencies for Cypress
-# RUN apt-get update && apt-get install -y \
-#     xvfb \
-#     libgbm-dev \
-#     libgtk-3-0 \
-#     libnotify-dev \
-#     libgconf-2-4 \
-#     libnss3 \
-#     libxss1 \
-#     libasound2 \
-#     fonts-liberation \
-#     libappindicator3-1 \
-#     xdg-utils \
-#     curl \
-#     wget \
-#     ca-certificates \
-#     --no-install-recommends && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y \
+xvfb \
+libgbm-dev \
+libgtk-3-0 \
+libnotify-dev \
+libgconf-2-4 \
+libnss3 \
+libxss1 \
+libasound2 \
+fonts-liberation \
+libappindicator3-1 \
+xdg-utils \
+curl \
+wget \
+ca-certificates \
+--no-install-recommends && rm -rf /var/lib/apt/lists/*
+
+CMD ["npx", "cypress", "run", "--spec", "cypress/e2e/secondTest.cy.js"]
