@@ -4,6 +4,7 @@ WORKDIR /docker-container-setup
 COPY package*.json ./
 RUN npm install
 COPY . .
+CMD ["npx", "cypress", "run", "--spec", "cypress/e2e/secondTest.cy.js"]
 
 # Install Xvfb and Linux dependencies for Cypress
 # RUN apt-get update && apt-get install -y \
