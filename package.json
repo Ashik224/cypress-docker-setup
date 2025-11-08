@@ -2,9 +2,16 @@
   "name": "cypress-docker",
   "version": "1.0.0",
   "scripts": {
-    "test": "cypress run"
+    "test": "cypress run",
+    "clean:reports": "node -e \"const fs=require('fs'); fs.rmSync('cypress/reports/mochawesome', {recursive:true, force:true}); fs.mkdirSync('cypress/reports/mochawesome', {recursive:true});\"",
+    "test:report": "cypress run && npm run generate-report",
+    "generate-report": "mochawesome-merge cypress/reports/mochawesome/*.json -o cypress/reports/mochawesome/report.json && marge cypress/reports/mochawesome/report.json -f report -o cypress/reports/mochawesome"
   },
   "devDependencies": {
-    "cypress": "^15.0.0"
+    "cypress": "^15.0.0",
+    "mocha": "^11.7.4",
+    "mochawesome": "^7.1.4",
+    "mochawesome-merge": "^5.0.0",
+    "mochawesome-report-generator": "^6.3.0"
   }
 }
