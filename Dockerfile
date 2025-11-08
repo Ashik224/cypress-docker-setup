@@ -23,4 +23,4 @@ wget \
 ca-certificates \
 --no-install-recommends && rm -rf /var/lib/apt/lists/*
 
-CMD ["npx", "cypress", "run", "--spec", "cypress/e2e/secondTest.cy.js"]
+CMD ["npm", "run", "test-suite"]
