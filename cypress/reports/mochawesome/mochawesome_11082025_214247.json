@@ -5,9 +5,9 @@
     "passes": 1,
     "pending": 0,
     "failures": 0,
-    "start": "2025-11-08T14:46:19.990Z",
-    "end": "2025-11-08T14:46:23.413Z",
-    "duration": 3423,
+    "start": "2025-11-08T15:42:43.433Z",
+    "end": "2025-11-08T15:42:47.169Z",
+    "duration": 3736,
     "testsRegistered": 1,
     "passPercent": 100,
     "pendingPercent": 0,
@@ -18,7 +18,7 @@
   },
   "results": [
     {
-      "uuid": "062c5bed-5070-4b1c-bc1a-e0bf397efbab",
+      "uuid": "99f9846b-651b-4154-9d42-ee2cb878ec1a",
       "title": "",
       "fullFile": "cypress\\e2e\\firstTest.cy.js",
       "file": "cypress\\e2e\\firstTest.cy.js",
@@ -27,7 +27,7 @@
       "tests": [],
       "suites": [
         {
-          "uuid": "f74f2aa1-1253-41af-ba73-84347356648e",
+          "uuid": "56f0e8dc-7461-491c-8227-f6dbb142a3fe",
           "title": "Docker Cypress Test",
           "fullFile": "",
           "file": "",
@@ -38,7 +38,7 @@
               "title": "visits example.com",
               "fullTitle": "Docker Cypress Test visits example.com",
               "timedOut": null,
-              "duration": 1316,
+              "duration": 1391,
               "state": "passed",
               "speed": "fast",
               "pass": true,
@@ -47,20 +47,20 @@
               "context": null,
               "code": "cy.visit('https://example.com');\ncy.contains('Example Domain').should('be.visible');\ncy.log('Test One completed');\nconsole.log('Test One completed from console');\ncy.wait(1000);",
               "err": {},
-              "uuid": "9ce493ee-0558-4261-a478-3addc7701814",
-              "parentUUID": "f74f2aa1-1253-41af-ba73-84347356648e",
+              "uuid": "8d77de92-2986-46cc-9c04-4ff78659bbce",
+              "parentUUID": "56f0e8dc-7461-491c-8227-f6dbb142a3fe",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "9ce493ee-0558-4261-a478-3addc7701814"
+            "8d77de92-2986-46cc-9c04-4ff78659bbce"
           ],
           "failures": [],
           "pending": [],
           "skipped": [],
-          "duration": 1316,
+          "duration": 1391,
           "root": false,
           "rootEmpty": false,
           "_timeout": 2000

@@ -1,0 +1,164 @@
+{
+  "stats": {
+    "suites": 2,
+    "tests": 2,
+    "passes": 2,
+    "pending": 0,
+    "failures": 0,
+    "testsRegistered": 2,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false,
+    "start": "2025-11-08T15:42:43.433Z",
+    "end": "2025-11-08T15:43:18.663Z",
+    "duration": 35230
+  },
+  "results": [
+    {
+      "uuid": "99f9846b-651b-4154-9d42-ee2cb878ec1a",
+      "title": "",
+      "fullFile": "cypress\\e2e\\firstTest.cy.js",
+      "file": "cypress\\e2e\\firstTest.cy.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "56f0e8dc-7461-491c-8227-f6dbb142a3fe",
+          "title": "Docker Cypress Test",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "visits example.com",
+              "fullTitle": "Docker Cypress Test visits example.com",
+              "timedOut": null,
+              "duration": 1391,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.visit('https://example.com');\ncy.contains('Example Domain').should('be.visible');\ncy.log('Test One completed');\nconsole.log('Test One completed from console');\ncy.wait(1000);",
+              "err": {},
+              "uuid": "8d77de92-2986-46cc-9c04-4ff78659bbce",
+              "parentUUID": "56f0e8dc-7461-491c-8227-f6dbb142a3fe",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "8d77de92-2986-46cc-9c04-4ff78659bbce"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 1391,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    },
+    {
+      "uuid": "4bbf1aad-7991-47a3-af9a-39817bdd84b7",
+      "title": "",
+      "fullFile": "cypress\\e2e\\secondTest.cy.js",
+      "file": "cypress\\e2e\\secondTest.cy.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "1653d798-2f64-44df-8735-92f527e30f13",
+          "title": "Site visit",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "should visit Netflix",
+              "fullTitle": "Site visit should visit Netflix",
+              "timedOut": null,
+              "duration": 20436,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.visit('https://www.netflix.com');\ncy.log('Test Two completed');\nconsole.log('Test Two completed from console');\ncy.wait(1000);",
+              "err": {},
+              "uuid": "9b87cc7b-5b34-42c3-b661-8bcfc892fe8b",
+              "parentUUID": "1653d798-2f64-44df-8735-92f527e30f13",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "9b87cc7b-5b34-42c3-b661-8bcfc892fe8b"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 20436,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": false,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.4"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/reports/mochawesome",
+        "overwrite": false,
+        "html": false,
+        "json": true,
+        "timestamp": "mmddyyyy_HHMMss"
+      },
+      "version": "6.3.0"
+    }
+  }
+}
