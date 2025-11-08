@@ -5,9 +5,9 @@
     "passes": 1,
     "pending": 0,
     "failures": 0,
-    "start": "2025-11-08T08:29:48.698Z",
-    "end": "2025-11-08T08:30:10.921Z",
-    "duration": 22223,
+    "start": "2025-11-08T14:46:24.470Z",
+    "end": "2025-11-08T14:46:40.186Z",
+    "duration": 15716,
     "testsRegistered": 1,
     "passPercent": 100,
     "pendingPercent": 0,
@@ -18,7 +18,7 @@
   },
   "results": [
     {
-      "uuid": "1db068b7-cb91-4199-9ce5-4f205729dcdc",
+      "uuid": "03b84a52-854b-4b8a-ab62-1f4f8bebde49",
       "title": "",
       "fullFile": "cypress\\e2e\\secondTest.cy.js",
       "file": "cypress\\e2e\\secondTest.cy.js",
@@ -27,7 +27,7 @@
       "tests": [],
       "suites": [
         {
-          "uuid": "1284ed5e-33ec-488d-b2a8-43bb7c996779",
+          "uuid": "a54fcd2b-98da-452b-9389-7611407be86d",
           "title": "Site visit",
           "fullFile": "",
           "file": "",
@@ -38,29 +38,29 @@
               "title": "should visit Netflix",
               "fullTitle": "Site visit should visit Netflix",
               "timedOut": null,
-              "duration": 12199,
+              "duration": 8501,
               "state": "passed",
-              "speed": "slow",
+              "speed": "medium",
               "pass": true,
               "fail": false,
               "pending": false,
               "context": null,
-              "code": "cy.visit('https://www.netflix.com');\ncy.log('Test Two completed');\nconsole.log('Test Two completed from console');\ncy.wait(5000);",
+              "code": "cy.visit('https://www.netflix.com');\ncy.log('Test Two completed');\nconsole.log('Test Two completed from console');\ncy.wait(1000);",
               "err": {},
-              "uuid": "e2f2d31c-bc05-4962-aae1-eddf334b929b",
-              "parentUUID": "1284ed5e-33ec-488d-b2a8-43bb7c996779",
+              "uuid": "a32f474c-a6c2-49d5-899f-9f32e0fcfa42",
+              "parentUUID": "a54fcd2b-98da-452b-9389-7611407be86d",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "e2f2d31c-bc05-4962-aae1-eddf334b929b"
+            "a32f474c-a6c2-49d5-899f-9f32e0fcfa42"
           ],
           "failures": [],
           "pending": [],
           "skipped": [],
-          "duration": 12199,
+          "duration": 8501,
           "root": false,
           "rootEmpty": false,
           "_timeout": 2000

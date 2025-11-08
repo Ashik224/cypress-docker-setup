@@ -5,9 +5,9 @@
     "passes": 1,
     "pending": 0,
     "failures": 0,
-    "start": "2025-11-08T08:29:40.032Z",
-    "end": "2025-11-08T08:29:47.557Z",
-    "duration": 7525,
+    "start": "2025-11-08T14:46:19.990Z",
+    "end": "2025-11-08T14:46:23.413Z",
+    "duration": 3423,
     "testsRegistered": 1,
     "passPercent": 100,
     "pendingPercent": 0,
@@ -18,7 +18,7 @@
   },
   "results": [
     {
-      "uuid": "4fdeea67-55cc-4a75-b69c-a0f7bd2bfa7e",
+      "uuid": "062c5bed-5070-4b1c-bc1a-e0bf397efbab",
       "title": "",
       "fullFile": "cypress\\e2e\\firstTest.cy.js",
       "file": "cypress\\e2e\\firstTest.cy.js",
@@ -27,7 +27,7 @@
       "tests": [],
       "suites": [
         {
-          "uuid": "514d2e26-25d7-41f1-a05b-67ea1a3cb23d",
+          "uuid": "f74f2aa1-1253-41af-ba73-84347356648e",
           "title": "Docker Cypress Test",
           "fullFile": "",
           "file": "",
@@ -38,29 +38,29 @@
               "title": "visits example.com",
               "fullTitle": "Docker Cypress Test visits example.com",
               "timedOut": null,
-              "duration": 5335,
+              "duration": 1316,
               "state": "passed",
-              "speed": "medium",
+              "speed": "fast",
               "pass": true,
               "fail": false,
               "pending": false,
               "context": null,
-              "code": "cy.visit('https://example.com');\ncy.contains('Example Domain').should('be.visible');\ncy.log('Test One completed');\nconsole.log('Test One completed from console');\ncy.wait(5000);",
+              "code": "cy.visit('https://example.com');\ncy.contains('Example Domain').should('be.visible');\ncy.log('Test One completed');\nconsole.log('Test One completed from console');\ncy.wait(1000);",
               "err": {},
-              "uuid": "be1d3ff4-bca8-4778-9f20-3bd7082285ac",
-              "parentUUID": "514d2e26-25d7-41f1-a05b-67ea1a3cb23d",
+              "uuid": "9ce493ee-0558-4261-a478-3addc7701814",
+              "parentUUID": "f74f2aa1-1253-41af-ba73-84347356648e",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "be1d3ff4-bca8-4778-9f20-3bd7082285ac"
+            "9ce493ee-0558-4261-a478-3addc7701814"
           ],
           "failures": [],
           "pending": [],
           "skipped": [],
-          "duration": 5335,
+          "duration": 1316,
           "root": false,
           "rootEmpty": false,
           "_timeout": 2000

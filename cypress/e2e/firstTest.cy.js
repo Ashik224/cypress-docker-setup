@@ -4,6 +4,6 @@ describe('Docker Cypress Test', () => {
     cy.contains('Example Domain').should('be.visible')
     cy.log('Test One completed')
     console.log('Test One completed from console')
-    cy.wait(5000)
+    cy.wait(1000)
   })
 })

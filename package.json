@@ -2,9 +2,9 @@
   "name": "cypress-docker",
   "version": "1.0.0",
   "scripts": {
-    "test": "cypress run",
-    "clean:reports": "node -e \"const fs=require('fs'); fs.rmSync('cypress/reports/mochawesome', {recursive:true, force:true}); fs.mkdirSync('cypress/reports/mochawesome', {recursive:true});\"",
-    "test:report": "cypress run && npm run generate-report",
+    "test": "cypress run --spec \"cypress/e2e/firstTest.cy.js,cypress/e2e/secondTest.cy.js\"",
+    "test-suite": "npm run clean-reports && npm run test || true && npm run generate-report",
+    "clean-reports": "node -e \"const fs=require('fs'); fs.rmSync('cypress/reports/mochawesome', {recursive:true, force:true}); fs.mkdirSync('cypress/reports/mochawesome', {recursive:true});\"",
     "generate-report": "mochawesome-merge cypress/reports/mochawesome/*.json -o cypress/reports/mochawesome/report.json && marge cypress/reports/mochawesome/report.json -f report -o cypress/reports/mochawesome"
   },
   "devDependencies": {
