@@ -1,4 +1,4 @@
-describe('Site visit', () => {
+describe('Google Homepage', () => {
     it('should visit google', () => {
         cy.visit('https://www.google.com')
         cy.log('Test Three completed')
