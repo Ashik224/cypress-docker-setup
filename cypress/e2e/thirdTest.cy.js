@@ -4,6 +4,5 @@ describe('Site visit', () => {
         cy.log('Test Three completed')
         console.log('Test Three completed from console')
         throw new Error('Intentional Failure for Test Three')
-        cy.wait(1000)
     })
 })
