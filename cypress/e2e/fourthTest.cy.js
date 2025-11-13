@@ -1,5 +1,5 @@
 describe('Wikipedia homepage', () => {
-    it('visits Wikipedia and asserts the page loaded', () => {
+    it('visits Wikipedia and asserts the page loaded', {tags: ['@low']}, () => {
         cy.visit('https://www.wikipedia.org')
         cy.title().should('include', 'Wikipedia')
         cy.get('input#searchInput').should('be.visible')
