@@ -2,7 +2,7 @@ FROM node:20-bullseye
 
 WORKDIR /docker-container-setup
 COPY package*.json ./
-RUN npm install
+RUN npm install --legacy-peer-deps
 COPY . .
 
 # Install Xvfb and Linux dependencies for Cypress
