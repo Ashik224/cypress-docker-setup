@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Cypress Test Report Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;padding:20px}
+        .container{max-width:1200px;margin:0 auto}
+        .header{text-align:center;color:white;margin-bottom:24px}
+        .header h1{font-size:1.6rem;margin-bottom:6px}
+        .header p{margin-top:4px;opacity:.95}
+        .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-bottom:24px}
+        .stat-card{background:white;padding:16px;border-radius:8px;box-shadow:0 4px 6px rgba(0,0,0,.08);text-align:center}
+        .stat-card h3{color:#666;font-size:.85rem;margin-bottom:6px;text-transform:uppercase;letter-spacing:1px}
+        .stat-card .value{font-size:1.8rem;font-weight:700}
+        .stat-card.passed .value{color:#10b981}
+        .stat-card.failed .value{color:#ef4444}
+        .stat-card.total .value{color:#3b82f6}
+        .stat-card.duration .value{color:#f59e0b}
+        .chart-container{background:white;padding:20px;border-radius:8px;box-shadow:0 4px 6px rgba(0,0,0,.08);display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+        .chart-wrapper{position:relative;height:320px}
+        .chart-title{text-align:center;font-size:1.1rem;font-weight:600;color:#333;margin-bottom:12px}
+        footer{text-align:center;color:white;margin-top:20px;font-size:.9rem}
+        .full-width{grid-column:1 / -1}
+        table{width:100%;border-collapse:collapse;margin:20px 0;background:white;border-radius:8px;overflow:hidden;box-shadow:0 4px 6px rgba(0,0,0,.08)}
+        th, td{border:1px solid #ddd;padding:12px;text-align:center}
+        th{background-color:#f2f2f2;font-weight:600;color:#333}
+        tr:hover{background-color:#f9f9f9}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧪 Cypress Test Report Dashboard</h1>
+            <p>Real-time test execution analytics</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card total">
+                <h3>Total Tests</h3>
+                <div class="value" id="totalTests">0</div>
+            </div>
+            <div class="stat-card passed">
+                <h3>Passed</h3>
+                <div class="value" id="passedTests">0</div>
+            </div>
+            <div class="stat-card failed">
+                <h3>Failed</h3>
+                <div class="value" id="failedTests">0</div>
+            </div>
+            <div class="stat-card duration">
+                <h3>Duration</h3>
+                <div class="value" id="duration">0s</div>
+            </div>
+        </div>
+
+        <!-- New Table for Test Tags -->
+        <table id="tagTable">
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Total Tests</th>
+                    <th>Passed</th>
+                    <th>Failed</th>
+                    <th>Pass Percentage</th>
+                </tr>
+            </thead>
+            <tbody id="tagTableBody">
+                <!-- Rows will be populated here -->
+            </tbody>
+        </table>
+
+        <div class="chart-container" id="mainCharts">
+            <div>
+                <div class="chart-title">Test Results Distribution</div>
+                <div class="chart-wrapper">
+                    <canvas id="testResultsChart"></canvas>
+                </div>
+            </div>
+            <div>
+                <div class="chart-title">Pass Rate</div>
+                <div class="chart-wrapper">
+                    <canvas id="passRateChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="chart-container" style="margin-top:18px;">
+            <div class="full-width">
+                <div class="chart-title">Top 5 Longest Running Tests</div>
+                <div class="chart-wrapper">
+                    <canvas id="longestTestsChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p class="timestamp">Report generated from mochawesome test results</p>
+        </footer>
+    </div>
+
+    <script>
+        async function loadReport() {
+            try {
+                const resp = await fetch('../reports/mochawesome/report.json');
+                if (!resp.ok) throw new Error('Could not load report.json: ' + resp.status);
+                const report = await resp.json();
+
+                // Stats (only passed & failed per request)
+                const stats = report.stats || {};
+                const passed = Number(stats.passes || 0);
+                const failed = Number(stats.failures || 0);
+                const total = passed + failed;
+                const durationSec = Math.round((Number(stats.duration || 0) / 1000));
+
+                document.getElementById('totalTests').textContent = total;
+                document.getElementById('passedTests').textContent = passed;
+                document.getElementById('failedTests').textContent = failed;
+                document.getElementById('duration').textContent = durationSec + 's';
+
+                // Doughnut: Passed vs Failed
+                const ctxD = document.getElementById('testResultsChart').getContext('2d');
+                new Chart(ctxD, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Passed', 'Failed'],
+                        datasets: [{
+                            data: [passed, failed],
+                            backgroundColor: ['#10b981', '#ef4444'],
+                            borderColor: ['#059669', '#dc2626'],
+                            borderWidth: 2
+                        }]
+                    },
+                    options: { responsive:true, maintainAspectRatio:false,
+                        plugins:{ legend:{ position:'bottom' } } }
+                });
+
+                // Pie: Pass rate with percentages
+                const passPct = total > 0 ? Math.round((passed/total)*100) : 0;
+                const failPct = total > 0 ? Math.round((failed/total)*100) : 0;
+                const ctxP = document.getElementById('passRateChart').getContext('2d');
+                new Chart(ctxP, {
+                    type: 'pie',
+                    data: {
+                        labels: [`Passed (${passPct}%)`, `Failed (${failPct}%)`],
+                        datasets: [{
+                            data: [passed, failed],
+                            backgroundColor: ['rgba(16,185,129,0.9)', 'rgba(239,68,68,0.9)'],
+                            borderColor: ['#059669','#dc2626'],
+                            borderWidth: 2
+                        }]
+                    },
+                    options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom' } } }
+                });
+
+                // --- Top 5 longest tests (bar chart) ---
+                function collectTests(node) {
+                    const out = [];
+                    if (!node) return out;
+
+                    // if node is root report with results array
+                    if (Array.isArray(node.results)) {
+                        node.results.forEach(r => out.push(...collectTests(r)));
+                        return out;
+                    }
+
+                    // If node has tests array
+                    if (Array.isArray(node.tests)) {
+                        node.tests.forEach(t => out.push(t));
+                    }
+
+                    // If node has suites or suites.suites...
+                    const suites = node.suites || node._suites || [];
+                    if (Array.isArray(suites)) {
+                        suites.forEach(s => out.push(...collectTests(s)));
+                    }
+
+                    // If node has nested suites property as object containing suites
+                    if (node.suite && Array.isArray(node.suite.suites)) {
+                        node.suite.suites.forEach(s => out.push(...collectTests(s)));
+                    }
+
+                    return out;
+                }
+
+                const allTests = collectTests(report);
+
+                // Normalize durations (try common fields)
+                const normalized = allTests.map(t => {
+                    const title = t.fullTitle || (t.title && t.title.trim().length ? t.title : '') || (t.parent ? `${t.parent} ${t.title}` : 'Unnamed test');
+                    const durationMs = Number(t.duration ?? t._duration ?? t.time ?? 0);
+                    return { title: title || 'Unnamed test', durationMs: isNaN(durationMs) ? 0 : durationMs, state: t.state || '' };
+                }).filter(x => typeof x.durationMs === 'number');
+
+                // Sort and pick top 5
+                const top5 = normalized.sort((a,b) => b.durationMs - a.durationMs).slice(0,5);
+
+                // Prepare labels and data
+                const labels = top5.map(t => {
+                    const max = 80;
+                    return t.title.length > max ? t.title.slice(0, max-1) + '…' : t.title;
+                });
+                const dataSec = top5.map(t => +(t.durationMs/1000).toFixed(2));
+
+                const ctxB = document.getElementById('longestTestsChart').getContext('2d');
+                new Chart(ctxB, {
+                    type: 'bar',
+                    data: {
+                        labels,
+                        datasets: [{
+                            label: 'Duration (s)',
+                            data: dataSec,
+                            backgroundColor: 'rgba(59,130,246,0.85)',
+                            borderColor: 'rgba(37,99,235,1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: { ticks:{ autoSkip:false }, grid:{ display:false } },
+                            y: { beginAtZero:true, title:{ display:true, text:'Seconds' } }
+                        },
+                        plugins: {
+                            legend: { display:false },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(ctx) {
+                                        const idx = ctx.dataIndex;
+                                        const ms = top5[idx] ? top5[idx].durationMs : 0;
+                                        return `${ctx.dataset.label}: ${ctx.formattedValue}s (${ms} ms)`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+
+                // --- New: Populate Test Tag Table ---
+                const tagCounts = {};
+                allTests.forEach(test => {
+                    // Parse context field (comma-separated string like "high, smoke")
+                    const contextStr = test.context || '';
+                    const tags = contextStr
+                        .split(',')
+                        .map(t => t.trim().replace(/^"|"$/g, ''))
+                        .filter(t => t.length > 0);
+
+                    // If test has no tags, skip it
+                    if (tags.length === 0) return;
+
+                    tags.forEach(tag => {
+                        if (!tagCounts[tag]) {
+                            tagCounts[tag] = { total: 0, passed: 0, failed: 0 };
+                        }
+                        tagCounts[tag].total++;
+                        if (test.state === 'passed') {
+                            tagCounts[tag].passed++;
+                        } else if (test.state === 'failed') {
+                            tagCounts[tag].failed++;
+                        }
+                    });
+                });
+
+                const tagTableBody = document.getElementById('tagTableBody');
+                Object.keys(tagCounts).sort().forEach(tag => {
+                    const { total, passed, failed } = tagCounts[tag];
+                    const passPercentage = total > 0 ? ((passed / total) * 100).toFixed(2) + '%' : '0%';
+                    const row = `<tr>
+                                    <td><strong>${tag}</strong></td>
+                                    <td>${total}</td>
+                                    <td><span style="color:#10b981;font-weight:600;">${passed}</span></td>
+                                    <td><span style="color:#ef4444;font-weight:600;">${failed}</span></td>
+                                    <td>${passPercentage}</td>
+                                 </tr>`;
+                    tagTableBody.insertAdjacentHTML('beforeend', row);
+                });
+
+            } catch (err) {
+                console.error('Error loading report:', err);
+                document.body.insertAdjacentHTML('beforeend','<p style="color:red;text-align:center;margin-top:12px">Error loading report.json — ensure you open this page via a local web server and the path ../reports/mochawesome/report.json is correct.</p>');
+            }
+        }
+
+        window.addEventListener('load', loadReport);
+    </script>
+</body>
+</html>
