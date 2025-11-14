@@ -1,5 +1,5 @@
 describe('Example Homepage', () => {
-  it('visits example.com', {tags: ['@high']}, () => {
+  it('visits example.com', {tags: 'High-Priority'}, () => {
     cy.visit('https://example.com')
     cy.contains('Example Domain').should('be.visible')
     cy.log('Test One completed')
@@ -7,7 +7,7 @@ describe('Example Homepage', () => {
     cy.wait(1000)
   })
   
-  it('visits example.com - 2', {tags: ['@critical']}, () => {
+  it('visits example.com - 2', {tags: 'Critical-Path'}, () => {
     cy.visit('https://example.com')
     cy.contains('Example Domain').should('be.visible')
     cy.log('Test One completed')

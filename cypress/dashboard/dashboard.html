@@ -10,7 +10,8 @@
         body{font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;padding:20px}
         .container{max-width:1200px;margin:0 auto}
         .header{text-align:center;color:white;margin-bottom:24px}
-        .header h1{font-size:2rem;margin-bottom:6px}
+        .header h1{font-size:1.6rem;margin-bottom:6px}
+        .header p{margin-top:4px;opacity:.95}
         .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-bottom:24px}
         .stat-card{background:white;padding:16px;border-radius:8px;box-shadow:0 4px 6px rgba(0,0,0,.08);text-align:center}
         .stat-card h3{color:#666;font-size:.85rem;margin-bottom:6px;text-transform:uppercase;letter-spacing:1px}
@@ -24,16 +25,17 @@
         .chart-title{text-align:center;font-size:1.1rem;font-weight:600;color:#333;margin-bottom:12px}
         footer{text-align:center;color:white;margin-top:20px;font-size:.9rem}
         .full-width{grid-column:1 / -1}
-        table{width:100%;border-collapse:collapse;margin-top:20px}
-        th, td{border:1px solid #ddd;padding:8px;text-align:center}
-        th{background-color:#f2f2f2}
+        table{width:100%;border-collapse:collapse;margin:20px 0;background:white;border-radius:8px;overflow:hidden;box-shadow:0 4px 6px rgba(0,0,0,.08)}
+        th, td{border:1px solid #ddd;padding:12px;text-align:center}
+        th{background-color:#f2f2f2;font-weight:600;color:#333}
+        tr:hover{background-color:#f9f9f9}
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
             <h1>🧪 Cypress Test Report Dashboard</h1>
-            <p>Real-time test execution analytics (served via HTTP)</p>
+            <p>Real-time test execution analytics</p>
         </div>
 
         <div class="stats-grid">
@@ -59,7 +61,7 @@
         <table id="tagTable">
             <thead>
                 <tr>
-                    <th>Test Type</th>
+                    <th>Category</th>
                     <th>Total Tests</th>
                     <th>Passed</th>
                     <th>Failed</th>
@@ -88,7 +90,7 @@
 
         <div class="chart-container" style="margin-top:18px;">
             <div class="full-width">
-                <div class="chart-title">Top 5 Longest Tests</div>
+                <div class="chart-title">Top 5 Longest Running Tests</div>
                 <div class="chart-wrapper">
                     <canvas id="longestTestsChart"></canvas>
                 </div>
@@ -185,11 +187,12 @@
                 }
 
                 const allTests = collectTests(report);
+
                 // Normalize durations (try common fields)
                 const normalized = allTests.map(t => {
                     const title = t.fullTitle || (t.title && t.title.trim().length ? t.title : '') || (t.parent ? `${t.parent} ${t.title}` : 'Unnamed test');
                     const durationMs = Number(t.duration ?? t._duration ?? t.time ?? 0);
-                    return { title: title || 'Unnamed test', durationMs: isNaN(durationMs) ? 0 : durationMs };
+                    return { title: title || 'Unnamed test', durationMs: isNaN(durationMs) ? 0 : durationMs, state: t.state || '' };
                 }).filter(x => typeof x.durationMs === 'number');
 
                 // Sort and pick top 5
@@ -240,7 +243,16 @@
                 // --- New: Populate Test Tag Table ---
                 const tagCounts = {};
                 allTests.forEach(test => {
-                    const tags = test.tags || []; // Assuming tags are stored in a 'tags' property
+                    // Parse context field (comma-separated string like "high, smoke")
+                    const contextStr = test.context || '';
+                    const tags = contextStr
+                        .split(',')
+                        .map(t => t.trim().replace(/^"|"$/g, ''))
+                        .filter(t => t.length > 0);
+
+                    // If test has no tags, skip it
+                    if (tags.length === 0) return;
+
                     tags.forEach(tag => {
                         if (!tagCounts[tag]) {
                             tagCounts[tag] = { total: 0, passed: 0, failed: 0 };
@@ -255,14 +267,14 @@
                 });
 
                 const tagTableBody = document.getElementById('tagTableBody');
-                Object.keys(tagCounts).forEach(tag => {
+                Object.keys(tagCounts).sort().forEach(tag => {
                     const { total, passed, failed } = tagCounts[tag];
                     const passPercentage = total > 0 ? ((passed / total) * 100).toFixed(2) + '%' : '0%';
                     const row = `<tr>
-                                    <td>${tag}</td>
+                                    <td><strong>${tag}</strong></td>
                                     <td>${total}</td>
-                                    <td>${passed}</td>
-                                    <td>${failed}</td>
+                                    <td><span style="color:#10b981;font-weight:600;">${passed}</span></td>
+                                    <td><span style="color:#ef4444;font-weight:600;">${failed}</span></td>
                                     <td>${passPercentage}</td>
                                  </tr>`;
                     tagTableBody.insertAdjacentHTML('beforeend', row);
