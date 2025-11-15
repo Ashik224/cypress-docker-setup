@@ -105,7 +105,7 @@
     <script>
         async function loadReport() {
             try {
-                const resp = await fetch('../reports/mochawesome/report.json');
+                const resp = await fetch('mochawesome/report.json');
                 if (!resp.ok) throw new Error('Could not load report.json: ' + resp.status);
                 const report = await resp.json();
 
